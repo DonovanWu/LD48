@@ -1,8 +1,10 @@
 package  
 {
+	import core.Fish;
 	import core.Player;
 	import org.flixel.*;
 	import flash.display.*;
+	import particles.Bubble;
 	import particles.IceBlocks;
 	/**
 	 * ...
@@ -27,6 +29,9 @@ package
 		public var _init:Boolean = false, _shaked:Boolean = false;
 		public var _ct:Number = 0;
 		
+		public var _bubbles:FlxGroup = new FlxGroup();
+		public var _fishes:FlxGroup = new FlxGroup();
+		
 		public var _score:uint = 0;
 		public var _score_board:FlxText;
 		public var _instrction:FlxText;
@@ -38,6 +43,10 @@ package
 			_bg.loadGraphic(Resource.IMPORT_BG);
 			_bg.set_position(0, 0);
 			this.add(_bg);
+			
+			// sets
+			this.add(_bubbles);
+			this.add(_fishes);
 			
 			// ice blocks
 			create_iceblocks();
@@ -80,6 +89,7 @@ package
 			super.update();
 			_ct++;
 			if (_intro) {
+				// introduction
 				if (!_init) {
 					FlxG.flash(0x00000000);
 					_init = true;
@@ -104,17 +114,52 @@ package
 					}
 				}
 			} else if (_in_game) {
+				// game part
 				update_control();
+				update_fishes();
+				update_bubbles();
+				
+				// instruction fading
 				_instrction.visible = true;
 				if (_ct >= 600 && _instrction.alpha >= 0) {
 					_instrction.alpha -= 0.02;
 				}
 			} else if (_end_game) {
-				
+				// end game
 			}
 			
 			for (var i:int = 0; i < _iceblocks.members.length; i++ ) {
 				_iceblocks.members[i].update_iceblock();
+			}
+		}
+		
+		private function update_bubbles():void {
+			for (var i:int = _bubbles.members.length - 1; i >= 0; i--) {
+				var itr_bubble:Bubble = _bubbles.members[i];
+				if (itr_bubble != null) {
+					itr_bubble.update_bubble(this);
+				
+					if (itr_bubble.should_remove()) {
+						_bubbles.remove(itr_bubble, true);
+					}
+				}
+			}
+		}
+		
+		private function update_fishes():void {
+			if (_ct % 1200 == 0) {
+				_fishes.add(new Fish());
+			}
+			
+			for (var i:int = _fishes.members.length - 1; i >= 0; i--) {
+				var itr_fish:Fish = _fishes.members[i];
+				if (itr_fish != null) {
+					itr_fish.update_fish(this);
+				
+					if (itr_fish.should_remove()) {
+						_fishes.remove(itr_fish, true);
+					}
+				}
 			}
 		}
 		
@@ -173,7 +218,7 @@ package
 					var itr_ice:IceBlocks = _iceblocks.members[i];
 					if (itr_ice.alive) {
 						var ice_axis:Number = itr_ice.x + 20;
-						if (Math.abs(player_axis - ice_axis) <= POS_TOL) {
+						if (Math.abs(player_axis - ice_axis) <= POS_TOL*1.5) {
 							itr_ice.health -= 1;
 							if (itr_ice.health <= 0) {
 								itr_ice.kill();
