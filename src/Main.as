@@ -10,13 +10,12 @@ package
 	import org.flixel.FlxG;
 	
 	[SWF(backgroundColor = "#000000", frameRate = "60", width = "640", height = "360")]
-	[Frame(factoryClass = "Preloader")]
 	
 	public class Main extends FlxGame {
 
 		public function Main():void {
-			// super(640, 320, MainMenu);
-			super(640, 360, FishingGame);
+			// super(640, 360, FishingGame);
+			super(640, 360, TitleScreen);
 		}
 	}
 	
