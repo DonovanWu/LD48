@@ -120,7 +120,11 @@ package core
 			} else {
 				// caught
 				this.set_position(g._player._bait.x - this.width / 2, g._player._bait.y - this.height / 2);
-				this.angle = -80;
+				if (this.scale.x < 0) {
+					this.angle = -80;
+				} else  {
+					this.angle = 80;
+				}
 				if (this.y <= 360) {
 					_shouldrm = true;
 					g._player._occupied = false;
