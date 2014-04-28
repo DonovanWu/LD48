@@ -177,7 +177,7 @@ package
 				}
 				
 				// judge end game
-				if (_iceblocks.countDead() >= 14) {
+				if (_iceblocks.countDead() >= 13) {
 					// ice cap breaks
 					_end_game = true;
 					_win = false;

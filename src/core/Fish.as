@@ -23,27 +23,27 @@ package core
 			switch(choice) {
 				case 1:
 					this.loadGraphic(Resource.IMPORT_FISH1);
-					this._weight = 1;
+					this._weight = 3;
 					this.y = Util.random_float(400, 500);
 					break;
 				case 2:
 					this.loadGraphic(Resource.IMPORT_FISH2);
-					this._weight = 1;
+					this._weight = 2;
 					this.y = Util.random_float(400, 500);
 					break;
 				case 3:
 					this.loadGraphic(Resource.IMPORT_FISH3);
-					this._weight = 2;
+					this._weight = 5;
 					this.y = Util.random_float(400, 500);
 					break;
 				case 4:
 					this.loadGraphic(Resource.IMPORT_SHARK1);
-					this._weight = 5;
+					this._weight = 10;
 					this.y = Util.random_float(475, 575);
 					break;
 				default:
 					this.loadGraphic(Resource.IMPORT_SHARK2);
-					this._weight = 5;
+					this._weight = 10;
 					this.y = Util.random_float(475, 575);
 					break;
 			}
@@ -128,7 +128,7 @@ package core
 				if (this.y <= 360) {
 					_shouldrm = true;
 					g._player._occupied = false;
-					g._score += _weight;
+					g._score += this._weight;
 					FlxG.play(Resource.IMPORT_SOUND_SCORE, 2);
 				}
 			}
