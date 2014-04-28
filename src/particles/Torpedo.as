@@ -29,6 +29,19 @@ package particles
 			_ct++;
 			this.angle += Util.random_float( -0.1, 0.1) + _ang;
 			
+			if (_caught) {
+				// caught
+				this.set_position(g._player._bait.x - this.width / 2, g._player._bait.y - this.height / 2);
+				this.angle = -80;
+				if (this.y <= 360) {
+					_ct = 300;
+					g._player._occupied = false;
+					g._player.scorch();
+					g._scorch_ct = Util.random_int(180, 240);
+				}
+				return;
+			}
+			
 			if (_vel < 3) {
 				_vel += 0.2;
 			}
@@ -52,6 +65,19 @@ package particles
 					}
 				}
 			}
+			
+			// custom overlap test
+			var hold_ang:Number = this.angle;
+			this.angle = 0;
+			var bx:Number = g._player._bait.x + 6;
+			var by:Number = g._player._bait.y + 6;
+			var x0:Number = this.x + this.width / 2;
+			if (Math.abs(x0 - bx) <= 10 && Math.abs(this.y + this.height / 2 - by) <= 10 && !g._player._occupied) {
+				trace("caught a torpedo!");
+				g._player._occupied = true;
+				_caught = true;
+			}
+			this.angle = hold_ang;
 		}
 		
 		public function should_remove():Boolean {

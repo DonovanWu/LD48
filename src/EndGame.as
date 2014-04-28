@@ -26,7 +26,7 @@ package
 			super.update();
 			
 			if (!_init) {
-				FlxG.flash(0xff000000, 5);
+				FlxG.flash(0xffffffff, 5);
 				_init = true;
 			}
 			

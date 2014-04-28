@@ -38,6 +38,7 @@ package
 		public var _intro:Boolean = true, _in_game:Boolean = false, _end_game:Boolean = false, _win:Boolean = false;
 		public var _init:Boolean = false, _shaked:Boolean = false;
 		public var _ct:Number = 0;
+		public var _scorch_ct:int = 0;
 		
 		public var _bubbles:FlxGroup = new FlxGroup();
 		public var _fishes:FlxGroup = new FlxGroup();
@@ -122,7 +123,7 @@ package
 				} else {
 					var timer:Array = [120, 640, 660, 900, 1320, 1440, 1560, 1800, 2100, 2160];
 					for (var k:int = 0; k < timer.length; k++ ) {
-						timer[k] /= 1;
+						timer[k] /= 1;	// test change point
 					}
 					for (var j:int = 0; j < timer.length - 1; j++ ) {
 						if (_ct >= timer[j] && _ct < timer[j + 1]) {
@@ -162,7 +163,7 @@ package
 				}
 				
 				// submarine events
-				if (_ct == 900) {
+				if (_ct == 900) {	// test change point
 					var start1:FlxPoint = new FlxPoint( -400, 400);
 					var start2:FlxPoint = new FlxPoint(1080, 400);
 					var end1:FlxPoint = new FlxPoint( -240, 400);
@@ -170,18 +171,18 @@ package
 					_submarines.add(new Submarine(start1, end1, false));
 					_submarines.add(new Submarine(start2, end2, true));
 				} else if (_ct > 900) {
-					for (var i:int = 0; i < _submarines.members.length; i++ ) {
-						_submarines.members[i].update_submarine(this);
+					for (var n:int = 0; n < _submarines.members.length; n++ ) {
+						_submarines.members[n].update_submarine(this);
 					}
 				}
 				
 				// judge end game
-				if (_iceblocks.countDead() >= 12) {
+				if (_iceblocks.countDead() >= 14) {
 					// ice cap breaks
 					_end_game = true;
 					_win = false;
 					_in_game = false;
-				} else if (_score >= 100) {
+				} else if (_score >= 100) {	// test change point
 					_end_game = true;
 					_win = true;
 					_in_game = false;
@@ -230,6 +231,10 @@ package
 						var explosion:Explosion = new Explosion(itr_bubble.x, itr_bubble.y, 0)
 						_explosions.add(explosion);
 						explosion.explode();
+						if (_player._occupied) {
+							_player._occupied = false;
+							trace("rod freed");
+						}
 						_torpedos.remove(itr_bubble, true);
 					}
 				}
@@ -281,6 +286,12 @@ package
 		private function update_control():void {
 			_moving = false;
 			_drilling = false;
+			
+			if (_scorch_ct > 0) {
+				_scorch_ct--;
+				return;
+			}
+			
 			if (FlxG.keys.pressed("LEFT")) {
 				_moving = true;
 				if (!_fishing && _player.x() >= 0 && _player.x() <= 595) {

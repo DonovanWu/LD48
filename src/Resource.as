@@ -41,6 +41,7 @@ package  {
 		// sound
 		[Embed( source = "../resc/sfx_powerup.mp3" )] public static var IMPORT_SOUND_SCORE:Class;
 		[Embed( source = "../resc/sfx_explosion.mp3" )] public static var IMPORT_SOUND_EXPLOSION:Class;
+		[Embed( source = "../resc/sfx_launcher.mp3" )] public static var IMPORT_SOUND_LAUNCHER:Class;
 		[Embed( source = "../resc/sfx_hit.mp3" )] public static var IMPORT_SOUND_HIT:Class;
 	}
 }
