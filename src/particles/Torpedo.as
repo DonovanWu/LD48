@@ -37,7 +37,7 @@ package particles
 					_ct = 300;
 					g._player._occupied = false;
 					g._player.scorch();
-					g._scorch_ct = Util.random_int(180, 240);
+					g._scorch_ct = Util.random_int(240, 300);
 				}
 				return;
 			}
