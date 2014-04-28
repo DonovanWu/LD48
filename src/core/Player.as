@@ -22,6 +22,7 @@ package core
 		public var _bait:FlxSprite = new FlxSprite();
 		public var _thread:FlxSprite = new FlxSprite();
 		public var _bait_home_y:Number = 340;
+		public var _occupied:Boolean = false;
 		private var _x:Number = 0;
 		private var _y:Number = 0;
 		private var _flipped:Boolean = false;

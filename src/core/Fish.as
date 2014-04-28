@@ -1,6 +1,7 @@
 package core 
 {
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxG;
 	import particles.Bubble;
 	/**
 	 * ...
@@ -104,10 +105,28 @@ package core
 				
 				// float effect
 				this.y += 0.2 * Math.sin(_ct * Util.RADIAN);
+				
+				// custom overlap test
+				var bx:Number = g._player._bait.x + 6;
+				var by:Number = g._player._bait.y + 6;
+				var x0:Number = this.x;
+				if (this.scale.x < 0) {
+					x0 = this.x + this.width;
+				}
+				if (Math.abs(x0 - bx) <= 10 && Math.abs(this.y + this.height / 2 - by) <= 10 && !g._player._occupied) {
+					trace("caught");
+					g._player._occupied = true;
+					caught();
+				}
 			} else {
 				// caught
+				this.set_position(g._player._bait.x - this.width / 2, g._player._bait.y - this.height / 2);
 				this.angle = -80;
-				this.set_position(g._player._bait.x, g._player._bait.y);
+				if (this.y <= 360) {
+					_shouldrm = true;
+					g._player._occupied = false;
+					g._score += _weight;
+				}
 			}
 		}
 		

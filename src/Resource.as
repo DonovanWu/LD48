@@ -16,6 +16,7 @@ package  {
 		
 		// core
 		[Embed( source = "../resc/player.png" )] public static var IMPORT_PLAYER:Class;
+		[Embed( source = "../resc/submarine.png" )] public static var IMPORT_SUBMARINE:Class;
 		
 		// dialogs
 		[Embed( source = "../resc/dialog1.png" )] public static var IMPORT_DIALOG1:Class;
@@ -28,8 +29,10 @@ package  {
 		[Embed( source = "../resc/fish3.png" )] public static var IMPORT_FISH3:Class;
 		[Embed( source = "../resc/shark1.png" )] public static var IMPORT_SHARK1:Class;
 		[Embed( source = "../resc/shark2.png" )] public static var IMPORT_SHARK2:Class;
+		[Embed( source = "../resc/explosion.png" )] public static var IMPORT_EXPLOSION:Class;
 		
 		// particles
 		[Embed( source = "../resc/bubble.png" )] public static var IMPORT_BUBBLE:Class;
+		[Embed( source = "../resc/torpedo.png" )] public static var IMPORT_TORPEDO:Class;
 	}
 }

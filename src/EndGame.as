@@ -1,6 +1,7 @@
 package  
 {
 	import org.flixel.FlxState;
+	import org.flixel.FlxG;
 	/**
 	 * ...
 	 * @author Wenrui Wu
@@ -12,8 +13,16 @@ package
 		public function EndGame(win:Boolean) 
 		{
 			this._win = win;
+			FlxG.flash(0xff000000, 5);
 		}
 		
+		public override function update():void {
+			super.update();
+			
+			if (FlxG.keys.justPressed("R")) {
+				FlxG.switchState(new TitleScreen());
+			}
+		}
 	}
 
 }

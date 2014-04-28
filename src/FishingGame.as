@@ -2,10 +2,13 @@ package
 {
 	import core.Fish;
 	import core.Player;
+	import core.Submarine;
 	import org.flixel.*;
 	import flash.display.*;
 	import particles.Bubble;
+	import particles.Explosion;
 	import particles.IceBlocks;
+	import particles.Torpedo;
 	/**
 	 * ...
 	 * @author Wenrui Wu
@@ -20,10 +23,15 @@ package
 		public var _bg:FlxSprite = new FlxSprite();
 		public var _iceblocks:FlxGroup = new FlxGroup();
 		public var _dialogs:FlxGroup = new FlxGroup();
+		public var _autobaits:FlxGroup = new FlxGroup();
+		public var _explosions:FlxGroup = new FlxGroup();
+		public var _submarines:FlxGroup = new FlxGroup();
+		public var _torpedos:FlxGroup = new FlxGroup();
 		
 		public var _player:Player = new Player();
 		public var _fishing:Boolean = false, _moving:Boolean = false, _drilling:Boolean = false;
 		public var _threadlen:Number = 10;
+		public var _booty:Number = 0;
 		
 		public var _intro:Boolean = true, _in_game:Boolean = false, _end_game:Boolean = false, _win:Boolean = false;
 		public var _init:Boolean = false, _shaked:Boolean = false;
@@ -45,8 +53,10 @@ package
 			this.add(_bg);
 			
 			// sets
+			this.add(_submarines);
 			this.add(_bubbles);
 			this.add(_fishes);
+			this.add(_torpedos);
 			
 			// ice blocks
 			create_iceblocks();
@@ -56,6 +66,9 @@ package
 			_player.set_pos(350, 255);
 			this.add(_player);
 			this.add(_dialogs);
+			this.add(_autobaits);
+			
+			this.add(_explosions);
 			
 			// camera
 			_camera_icon.width = 1;
@@ -88,6 +101,7 @@ package
 		public override function update():void {
 			super.update();
 			_ct++;
+			update_explosion();
 			if (_intro) {
 				// introduction
 				if (!_init) {
@@ -111,21 +125,59 @@ package
 						_dialogs.clear();
 						_player.stand();
 						_ct = 0;
+						_init = false;
 					}
 				}
 			} else if (_in_game) {
 				// game part
+				if (!_init) {
+					_fishes.add(new Fish());
+					_fishes.add(new Fish());
+					_init = true;
+				}
+				
+				// update score
+				_score_board.text = "Weight: " + _score + " lb";
+				
 				update_control();
 				update_fishes();
 				update_bubbles();
+				update_torpedos();
 				
 				// instruction fading
 				_instrction.visible = true;
 				if (_ct >= 600 && _instrction.alpha >= 0) {
 					_instrction.alpha -= 0.02;
 				}
+				
+				// submarine events
+				if (_ct == 300) {
+					var start1:FlxPoint = new FlxPoint( -400, 400);
+					var start2:FlxPoint = new FlxPoint(1080, 400);
+					var end1:FlxPoint = new FlxPoint( -240, 400);
+					var end2:FlxPoint = new FlxPoint(480, 400);
+					_submarines.add(new Submarine(start1, end1, false));
+					_submarines.add(new Submarine(start2, end2, true));
+				} else if (_ct > 300) {
+					for (var i:int = 0; i < _submarines.members.length; i++ ) {
+						_submarines.members[i].update_submarine(this);
+					}
+				}
+				
+				// judge end game
+				if (_iceblocks.countDead() >= 14) {
+					// ice cap breaks
+					_end_game = true;
+					_win = false;
+					_in_game = false;
+				} else if (_score >= 400) {
+					_end_game = true;
+					_win = true;
+					_in_game = false;
+				}
 			} else if (_end_game) {
 				// end game
+				FlxG.switchState(new EndGame(_win));
 			}
 			
 			for (var i:int = 0; i < _iceblocks.members.length; i++ ) {
@@ -146,20 +198,61 @@ package
 			}
 		}
 		
+		private function update_torpedos():void {
+			for (var i:int = _torpedos.members.length - 1; i >= 0; i--) {
+				var itr_bubble:Torpedo = _torpedos.members[i];
+				if (itr_bubble != null) {
+					itr_bubble.update_torpedo(this);
+				
+					if (itr_bubble.should_remove()) {
+						var explosion:Explosion = new Explosion(itr_bubble.x, itr_bubble.y, 0)
+						_explosions.add(explosion);
+						explosion.explode();
+						_torpedos.remove(itr_bubble, true);
+					}
+				}
+			}
+		}
+		
+		private function update_explosion():void {
+			for (var i:int = _explosions.members.length - 1; i >= 0; i--) {
+				var itr_exp:Explosion = _explosions.members[i];
+				if (itr_exp != null) {
+					itr_exp.update_explosion(this);
+				
+					if (itr_exp.should_remove()) {
+						_explosions.remove(itr_exp, true);
+					}
+				}
+			}
+		}
+		
 		private function update_fishes():void {
-			if (_ct % 1200 == 0) {
+			if (_ct % 1200 == 600) {
 				_fishes.add(new Fish());
 			}
 			
-			for (var i:int = _fishes.members.length - 1; i >= 0; i--) {
-				var itr_fish:Fish = _fishes.members[i];
-				if (itr_fish != null) {
-					itr_fish.update_fish(this);
-				
-					if (itr_fish.should_remove()) {
-						_fishes.remove(itr_fish, true);
+			if (_fishes.length > 0) {
+				for (var i:int = _fishes.members.length - 1; i >= 0; i--) {
+					var itr_fish:Fish = _fishes.members[i];
+					if (itr_fish != null) {
+						itr_fish.update_fish(this);
+					
+						if (itr_fish.should_remove()) {
+							_fishes.remove(itr_fish, true);
+						}
 					}
 				}
+				
+				/*
+				FlxG.overlap(_fishes, _player._bait, function(itr_fish:Fish, bait:FlxSprite):void {
+					trace("overlapped");
+					if (_booty == 0) {
+						itr_fish.caught();
+						_booty = 1;
+					}
+				});
+				*/
 			}
 		}
 		
@@ -233,16 +326,6 @@ package
 			if (_camera_icon.y >= 460) {
 				_camera_icon.y = 460;
 			}
-			
-			// judge end game
-			if (_iceblocks.countDead() >= 14) {
-				// ice cap breaks
-				_end_game = true;
-				_win = false;
-			} else if (_score >= 40) {
-				_end_game = true;
-				_win = true;
-			}
 		}
 		
 		private function on_hole():Boolean {
@@ -277,7 +360,9 @@ package
 				case 5:
 					hide_dialog();
 					if (!_shaked) {
-						FlxG.camera.shake(0.02, 0.2);
+						var explosion:Explosion = new Explosion(120, 300, 0);
+						explosion.explode();
+						_explosions.add(explosion);
 						_shaked = true;
 						_iceblocks.members[3].kill();
 					}
