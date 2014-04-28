@@ -2,6 +2,7 @@ package core
 {
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
 	/**
 	 * ...
@@ -13,7 +14,7 @@ package core
 		public const ANIM_WALK:String = "ANIM_WALK";
 		public const ANIM_FISH:String = "ANIM_FISH";
 		public const ANIM_DRILL:String = "ANIM_DRILL";
-		public const ANIM_DEAD:String = "ANIM_DEAD";
+		public const ANIM_SCORCH:String = "ANIM_SCORCH";
 		public const ANIM_LOOKUP:String = "ANIM_LOOKUP";
 		public const ANIM_LOOKAWAY:String = "ANIM_LOOKAWAY";
 		public const ANIM_WELLWELL:String = "ANIM_WELLWELL";
@@ -35,7 +36,7 @@ package core
 			_body.addAnimation(ANIM_FISH, [4]);
 			_body.addAnimation(ANIM_LOOKUP, [5]);
 			_body.addAnimation(ANIM_DRILL, [6, 7], 30);
-			_body.addAnimation(ANIM_DEAD, [8, 8, 8, 8, 8, 8, 9, 8, 9, 8, 9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8], 6);
+			_body.addAnimation(ANIM_SCORCH, [8, 8, 8, 8, 8, 8, 9, 8, 9, 8, 9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8], 6);
 			_body.addAnimation(ANIM_LOOKAWAY, [10]);
 			_body.addAnimation(ANIM_WELLWELL, [11]);
 			this.add(_body);
@@ -104,9 +105,10 @@ package core
 		
 		public function drill():void {
 			_body.play(ANIM_DRILL);
+			FlxG.play(Resource.IMPORT_SOUND_HIT, 0.38);
 		}
 		
-		public function look_away(dir:Number = 1) {
+		public function look_away(dir:Number = 1):void {
 			if (dir < 0) {
 				_body.scale.x = -1;
 			} else {
@@ -128,6 +130,10 @@ package core
 		public function unfish():void {
 			_thread.visible = false;
 			_bait.visible = false;
+		}
+		
+		public function scorch():void {
+			_body.play(ANIM_SCORCH);
 		}
 	}
 

@@ -111,7 +111,7 @@ package
 				} else {
 					var timer:Array = [120, 640, 660, 960, 1320, 1440, 1560, 1800, 2100, 2160];
 					for (var k:int = 0; k < timer.length; k++ ) {
-						timer[k] /= 10;
+						timer[k] /= 1;
 					}
 					for (var j:int = 0; j < timer.length - 1; j++ ) {
 						if (_ct >= timer[j] && _ct < timer[j + 1]) {
@@ -165,12 +165,12 @@ package
 				}
 				
 				// judge end game
-				if (_iceblocks.countDead() >= 14) {
+				if (_iceblocks.countDead() >= 12) {
 					// ice cap breaks
 					_end_game = true;
 					_win = false;
 					_in_game = false;
-				} else if (_score >= 400) {
+				} else if (_score >= 100) {
 					_end_game = true;
 					_win = true;
 					_in_game = false;

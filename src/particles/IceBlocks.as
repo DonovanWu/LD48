@@ -41,7 +41,7 @@ package particles
 			
 			// this.play(STATUS_DRILLED);
 			
-			this.health = 100;
+			this.health = 500;
 		}
 		
 		public override function kill():void {

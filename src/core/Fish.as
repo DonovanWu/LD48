@@ -126,6 +126,7 @@ package core
 					_shouldrm = true;
 					g._player._occupied = false;
 					g._score += _weight;
+					FlxG.play(Resource.IMPORT_SOUND_SCORE, 2);
 				}
 			}
 		}

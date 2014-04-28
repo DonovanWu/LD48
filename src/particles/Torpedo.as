@@ -11,6 +11,7 @@ package particles
 		private var _ct:Number = 0;
 		private var _vel:Number;
 		private var _ang:Number;
+		private var _caught:Boolean = false;
 		
 		public function Torpedo(x:Number = 0, y:Number = 0, ang:Number = 0) 
 		{

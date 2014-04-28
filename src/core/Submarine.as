@@ -40,8 +40,8 @@ package core
 				this.x += Math.sin(_ct * Util.RADIAN);
 				this.y += 0.1 * Math.cos(_ct * Util.RADIAN);
 				
-				var launch_time:Number = (_flip) ? 0:60;	// 600
-				if (_ct % 200 == launch_time) {	// 2400
+				var launch_time:Number = (_flip) ? 0:120;	// 600 ?
+				if (_ct % 1200 == launch_time) {	// 2400 ?
 					var x0:Number = (_flip) ? -60:700;
 					var y0:Number = Util.random_float(450, 550);
 					var ang_adj:Number = (_flip) ? 0:180;

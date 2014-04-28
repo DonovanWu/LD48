@@ -9,10 +9,13 @@ package  {
 		[Embed( source = "../resc/iceblock.png" )] public static var IMPORT_ICEBLOCK:Class;
 		[Embed( source = "../resc/bait.png" )] public static var IMPORT_BAIT:Class;
 		
-		[Embed( source = "../resc/titlescreen.png" )] public static var IMPORT_TITLESCREEN:Class;
+		
 		
 		// bg
 		[Embed( source = "../resc/bg.png" )] public static var IMPORT_BG:Class;
+		[Embed( source = "../resc/titlescreen.png" )] public static var IMPORT_TITLESCREEN:Class;
+		[Embed( source = "../resc/endscreen1.png" )] public static var IMPORT_ENDSCREEN1:Class;
+		[Embed( source = "../resc/endscreen2.png" )] public static var IMPORT_ENDSCREEN2:Class;
 		
 		// core
 		[Embed( source = "../resc/player.png" )] public static var IMPORT_PLAYER:Class;
@@ -34,5 +37,10 @@ package  {
 		// particles
 		[Embed( source = "../resc/bubble.png" )] public static var IMPORT_BUBBLE:Class;
 		[Embed( source = "../resc/torpedo.png" )] public static var IMPORT_TORPEDO:Class;
+		
+		// sound
+		[Embed( source = "../resc/sfx_powerup.mp3" )] public static var IMPORT_SOUND_SCORE:Class;
+		[Embed( source = "../resc/sfx_explosion.mp3" )] public static var IMPORT_SOUND_EXPLOSION:Class;
+		[Embed( source = "../resc/sfx_hit.mp3" )] public static var IMPORT_SOUND_HIT:Class;
 	}
 }

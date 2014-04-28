@@ -29,7 +29,7 @@ package particles {
 			if (_ct > _delay) {
 				this.visible = true;
 				this.play(BOOM);
-				// FlxG.play(Resource.IMPORT_SOUND_EXPLOSION, 4);
+				FlxG.play(Resource.IMPORT_SOUND_EXPLOSION, 4);
 				FlxG.camera.shake(0.02);
 				_ct = 0;
 				_explode = false;
