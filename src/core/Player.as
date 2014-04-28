@@ -105,7 +105,7 @@ package core
 		
 		public function drill():void {
 			_body.play(ANIM_DRILL);
-			FlxG.play(Resource.IMPORT_SOUND_HIT, 0.38);
+			FlxG.play(Resource.IMPORT_SOUND_HIT, 0.3);
 		}
 		
 		public function look_away(dir:Number = 1):void {

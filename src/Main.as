@@ -10,6 +10,7 @@ package
 	import org.flixel.FlxG;
 	
 	[SWF(backgroundColor = "#000000", frameRate = "60", width = "640", height = "360")]
+	[Frame(factoryClass="Preloader")]
 	
 	public class Main extends FlxGame {
 

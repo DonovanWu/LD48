@@ -9,6 +9,7 @@ package
 	import particles.Explosion;
 	import particles.IceBlocks;
 	import particles.Torpedo;
+	import particles.WaterWeed;
 	/**
 	 * ...
 	 * @author Wenrui Wu
@@ -27,6 +28,7 @@ package
 		public var _explosions:FlxGroup = new FlxGroup();
 		public var _submarines:FlxGroup = new FlxGroup();
 		public var _torpedos:FlxGroup = new FlxGroup();
+		// public var _waterweeds:FlxGroup = new FlxGroup();
 		
 		public var _player:Player = new Player();
 		public var _fishing:Boolean = false, _moving:Boolean = false, _drilling:Boolean = false;
@@ -52,11 +54,19 @@ package
 			_bg.set_position(0, 0);
 			this.add(_bg);
 			
+			/* waterweeds
+			var waterweed1:WaterWeed = new WaterWeed(320, 640, -5).green_version();
+			var waterweed2:WaterWeed = new WaterWeed(325, 640, 0);
+			_waterweeds.add(waterweed1);
+			_waterweeds.add(waterweed2);
+			this.add(_waterweeds);
+			*/
+			
 			// sets
 			this.add(_submarines);
-			this.add(_bubbles);
 			this.add(_fishes);
 			this.add(_torpedos);
+			this.add(_bubbles);
 			
 			// ice blocks
 			create_iceblocks();
@@ -102,6 +112,7 @@ package
 			super.update();
 			_ct++;
 			update_explosion();
+			// update_waterweeds();
 			if (_intro) {
 				// introduction
 				if (!_init) {
@@ -109,7 +120,7 @@ package
 					_init = true;
 					return;
 				} else {
-					var timer:Array = [120, 640, 660, 960, 1320, 1440, 1560, 1800, 2100, 2160];
+					var timer:Array = [120, 640, 660, 900, 1320, 1440, 1560, 1800, 2100, 2160];
 					for (var k:int = 0; k < timer.length; k++ ) {
 						timer[k] /= 1;
 					}
@@ -151,14 +162,14 @@ package
 				}
 				
 				// submarine events
-				if (_ct == 300) {
+				if (_ct == 900) {
 					var start1:FlxPoint = new FlxPoint( -400, 400);
 					var start2:FlxPoint = new FlxPoint(1080, 400);
 					var end1:FlxPoint = new FlxPoint( -240, 400);
 					var end2:FlxPoint = new FlxPoint(480, 400);
 					_submarines.add(new Submarine(start1, end1, false));
 					_submarines.add(new Submarine(start2, end2, true));
-				} else if (_ct > 300) {
+				} else if (_ct > 900) {
 					for (var i:int = 0; i < _submarines.members.length; i++ ) {
 						_submarines.members[i].update_submarine(this);
 					}
@@ -184,6 +195,17 @@ package
 				_iceblocks.members[i].update_iceblock();
 			}
 		}
+		
+		/*
+		private function update_waterweeds():void {
+			if (_waterweeds.members.length > 0) {
+				for (var i:int = 0; i < _waterweeds.members.length; i++ ) {
+					// _waterweeds.members[i].update_waterweed(this);
+					_waterweeds.members[i].rotate(1);
+				}
+			}
+		}
+		*/
 		
 		private function update_bubbles():void {
 			for (var i:int = _bubbles.members.length - 1; i >= 0; i--) {
@@ -228,7 +250,7 @@ package
 		}
 		
 		private function update_fishes():void {
-			if (_ct % 1200 == 600) {
+			if (_ct % 900 == 600) {
 				_fishes.add(new Fish());
 			}
 			

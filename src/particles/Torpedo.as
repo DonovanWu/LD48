@@ -35,6 +35,10 @@ package particles
 			this.x += _vel * Math.cos(this.angle * Util.RADIAN);
 			this.y += _vel * Math.sin(this.angle * Util.RADIAN);
 			
+			if (_ct % 5 == 0) {
+				g._bubbles.add(new Bubble(this.x + this.width / 2, this.y, this.angle - 180));
+			}
+			
 			if (this.y <= 360) {
 				this.y = 360;
 				_ct = 300;

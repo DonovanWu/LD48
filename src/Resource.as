@@ -8,7 +8,7 @@ package  {
 		// accessories
 		[Embed( source = "../resc/iceblock.png" )] public static var IMPORT_ICEBLOCK:Class;
 		[Embed( source = "../resc/bait.png" )] public static var IMPORT_BAIT:Class;
-		
+		[Embed( source = "../resc/waterweed.png" )] public static var IMPORT_WATERWEED:Class;
 		
 		
 		// bg

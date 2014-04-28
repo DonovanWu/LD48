@@ -68,15 +68,14 @@ package core
 				var swimmed:Boolean = false;
 				
 				// bubbles
-				if (_ct % 300 < 5) {
-					var x0:Number = this.x;
-					var y0:Number = this.y;
-					var ang:Number = Util.random_float(0, 30);
+				if (_ct % 10 == 0) {
+					var dx:Number = 0;
+					var ang:Number = Util.random_float(-75, -45);
 					if (this.scale.x < 0) {
-						x0 += this.width;
+						dx = this.width;
 						ang = 180 - ang;
 					}
-					g._bubbles.add(new Bubble(x0, y0, ang));
+					g._bubbles.add(new Bubble(this.x + dx, this.y, ang));
 				}
 				
 				// swim AI
