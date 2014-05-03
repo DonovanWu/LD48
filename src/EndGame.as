@@ -31,7 +31,7 @@ package
 			}
 			
 			if (FlxG.keys.justPressed("R")) {
-				FlxG.fade(0xff000000, 5, function () {
+				FlxG.fade(0xff000000, 5, function ():void {
 					FlxG.switchState(new TitleScreen());
 				});
 			}

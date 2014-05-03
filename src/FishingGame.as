@@ -45,7 +45,8 @@ package
 		
 		public var _score:uint = 0;
 		public var _score_board:FlxText;
-		public var _instrction:FlxText;
+		public var _instruction:FlxText;
+		public var _skip_text:FlxText;
 		
 		public override function create():void {
 			super.create();
@@ -91,28 +92,36 @@ package
 			FlxG.camera.follow(_camera_icon);
 			
 			// score board
-			_score_board = new FlxText(20, 20, 160, "");
+			_score_board = new FlxText(20, 20, 160, "", false);
 			_score_board.text = "Weight: " + _score + " lb";
-			_score_board.color = 0x000000;
+			_score_board.setFormat("sans-serif", 12, 0x000000);
 			this.add(_score_board);
 			
 			// instruction
-			_instrction = new FlxText(80, 160, 320, "");
-			_instrction.text = "Instruction:\n" + 
+			_instruction = new FlxText(80, 160, 320, "", false);
+			_instruction.text = "Instruction:\n" + 
 							   "Press Down Arrow Key to fish, Up to pull the thread back.\n" +
 							   "When not fishing, you may drill holes on ice by pressing Down,\n" + 
 							   "but it won't be effective. Try to find a more effective way!\n" +
 							   "But be sure not to make too many holes, or the icecap may break\n" +
 							   "And you'll fall into river!";
-			_instrction.color = 0xFF0000;
-			_instrction.visible = false;
-			this.add(_instrction);
+			_instruction.setFormat("sans-serif", 12, 0xFF0000);
+			_instruction.visible = false;
+			this.add(_instruction);
+			
+			// skip text
+			_skip_text = new FlxText(480, 80, 100, "", false);
+			_skip_text.setFormat("sans-serif", 12, 0xFF0000);
+			_skip_text.text = "Press ENTER to skip intro";
+			_skip_text.visible = false;
+			this.add(_skip_text);
 		}
 		
 		public override function update():void {
 			super.update();
 			_ct++;
 			update_explosion();
+			update_skip_text();
 			// update_waterweeds();
 			if (_intro) {
 				// introduction
@@ -130,7 +139,7 @@ package
 							intro_event(j+1);
 						}
 					}
-					if (_ct >= timer[timer.length - 1]) {
+					if (_ct >= timer[timer.length - 1] || FlxG.keys.justPressed("ENTER")) {
 						// going into game
 						_intro = false;
 						_in_game = true;
@@ -138,6 +147,12 @@ package
 						_player.stand();
 						_ct = 0;
 						_init = false;
+						_player.set_pos(118, _player.y());
+						_instruction.visible = true;
+						if (_iceblocks.members[3].alive) {
+							_iceblocks.members[3].kill();
+							FlxG.flash(0xff000000);
+						}
 					}
 				}
 			} else if (_in_game) {
@@ -157,9 +172,8 @@ package
 				update_torpedos();
 				
 				// instruction fading
-				_instrction.visible = true;
-				if (_ct >= 600 && _instrction.alpha >= 0) {
-					_instrction.alpha -= 0.02;
+				if (_ct >= 600 && _instruction.alpha >= 0) {
+					_instruction.alpha -= 0.02;
 				}
 				
 				// submarine events
@@ -238,6 +252,14 @@ package
 						_torpedos.remove(itr_bubble, true);
 					}
 				}
+			}
+		}
+		
+		private function update_skip_text():void {
+			if (_intro) {
+				if (_ct % 60 == 1) _skip_text.visible = !(_skip_text.visible);
+			} else {
+				_skip_text.visible = false;
 			}
 		}
 		

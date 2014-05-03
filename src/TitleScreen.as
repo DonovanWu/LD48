@@ -28,8 +28,8 @@ package
 			this.add(_player);
 			
 			// flashing text
-			_msg = new FlxText(75, 200, 160, "Press Enter To Start.\nArrow Keys to Control.");
-			_msg.color = 0x990000;
+			_msg = new FlxText(75, 180, 160, "Press Enter To Start.\nArrow Keys to Control.", false);
+			_msg.setFormat("sans-serif", 12, 0x990000);
 			this.add(_msg);
 		}
 		
