@@ -98,7 +98,7 @@ package
 			this.add(_score_board);
 			
 			// instruction
-			_instruction = new FlxText(80, 160, 320, "", false);
+			_instruction = new FlxText(80, 100, 320, "", false);
 			_instruction.text = "Instruction:\n" + 
 							   "Press Down Arrow Key to fish, Up to pull the thread back.\n" +
 							   "When not fishing, you may drill holes on ice by pressing Down,\n" + 
@@ -316,13 +316,13 @@ package
 			
 			if (FlxG.keys.pressed("LEFT")) {
 				_moving = true;
-				if (!_fishing && _player.x() >= 0 && _player.x() <= 595) {
-					_player.walk( -2);
+				if (!_fishing && _player.x() >= 0) {
+					_player.walk( -2.5);
 				}
 			} else if (FlxG.keys.pressed("RIGHT")) {
 				_moving = true;
-				if (!_fishing && _player.x() >= 0 && _player.x() <= 595) {
-					_player.walk(2);
+				if (!_fishing && _player.x() <= 595) {
+					_player.walk(2.5);
 				}
 			} else if (FlxG.keys.pressed("UP")) {
 				if (_fishing) {
